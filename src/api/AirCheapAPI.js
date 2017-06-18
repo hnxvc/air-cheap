@@ -3,7 +3,7 @@ import AirportActions from '../actions/AirportActions';
 
 let AirCheapAPI = {
   fetchAirports(successCallback, errorCallback) {
-    fetch('https://api.github.com/users/midigamo')
+    fetch('airports.json')
     .then(response => {
       return response.json()
     })
