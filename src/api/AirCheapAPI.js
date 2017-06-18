@@ -2,17 +2,16 @@ import 'whatwg-fetch';
 import AirportActions from '../actions/AirportActions';
 
 let AirCheapAPI = {
-  fetchAirports() {
-    fetch('airports.json')
-    .then(result => {
-      console.log('REMOVEME --- json', result.json());
-      return result
+  fetchAirports(successCallback, errorCallback) {
+    fetch('https://api.github.com/users/midigamo')
+    .then(response => {
+      return response.json()
     })
-    .then(result => {
-      return AirportActions.fetchAirportsSuccess(result);
+    .then(response => {
+      return successCallback(response);
     })
     .catch(err => {
-      return AirportActions.fetchAirportsError(err)
+      return errorCallback(err);
     })
   }
 }

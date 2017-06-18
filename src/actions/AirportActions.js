@@ -5,24 +5,24 @@ import AirCheapAPI from '../api/AirCheapAPI';
 
 let AirportActions = {
   fetchAirports() {
-    AirCheapAPI.fetchAirports();
     AppDispatcher.dispatch({
       type: constants.FETCH_AIRPORTS
     });
-  },
 
-  fetchAirportsSuccess(response) {
-    AppDispatcher.dispatch({
-      type: constants.FETCH_AIRPORTS_SUCCESS,
-      payload: { response }
-    });
-  },
-
-  fetchAirportsError(error) {
-    AppDispatcher.dispatch({
-      type: constants.FETCH_AIRPORTS_ERROR,
-      payload: { error }
-    });
+    AirCheapAPI.fetchAirports(
+      (response) => {
+        AppDispatcher.dispatch({
+          type: constants.FETCH_AIRPORTS_SUCCESS,
+          payload: { response }
+        });
+      },
+      (err) => {
+        AppDispatcher.dispatch({
+          type: constants.FETCH_AIRPORTS_ERROR,
+          payload: { err }
+        });
+      }
+    );
   }
 }
 

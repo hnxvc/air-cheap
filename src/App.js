@@ -18,7 +18,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('REMOVEME ---- state', this.state);
     return (
       <div className="App">
         <header>
