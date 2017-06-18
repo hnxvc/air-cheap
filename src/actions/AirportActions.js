@@ -23,6 +23,37 @@ let AirportActions = {
         });
       }
     );
+  },
+
+  chooseAirport(target, code) {
+    AppDispatcher.dispatch({
+      type: constants.CHOOSE_AIRPORT,
+      target,
+      code
+    });
+  },
+
+  fetchTickets(origin, destination) {
+    AppDispatcher.dispatch({
+      type: constants.FETCH_TICKETS,
+    });
+
+    AirCheapAPI.fetchTickets(
+      origin,
+      destination,
+      (response) => {
+        AppDispatcher.dispatch({
+          type: constants.FETCH_TICKETS_SUCCESS,
+          payload: { response }
+        });
+      },
+      (err) => {
+        AppDispatcher.dispatch({
+          type: constants.FETCH_AIRPORTS_ERROR,
+          payload: { err }
+        });
+      }
+    )
   }
 }
 

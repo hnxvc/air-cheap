@@ -13,6 +13,19 @@ let AirCheapAPI = {
     .catch(err => {
       return errorCallback(err);
     })
+  },
+
+  fetchTickets(origin, destination, successCallback, errorCallback) {
+    fetch('flights.json')
+    .then(response => {
+      return response.json();
+    })
+    .then(response => {
+      return successCallback(response);
+    })
+    .catch(err => {
+      return errorCallback(err);
+    })
   }
 }
 
