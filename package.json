@@ -8,8 +8,8 @@
   "dependencies": {
     "flux": "^3.1.2",
     "react": "^15.6.1",
-    "react-autosuggest": "^9.1.0",
     "react-dom": "^15.6.1",
+    "react-select": "^1.0.0-rc.5",
     "whatwg-fetch": "^2.0.3"
   },
   "scripts": {

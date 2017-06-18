@@ -26,7 +26,15 @@ p {
 
 .header-route {
   margin-top: 10px;
-  margin-left: calc(50% - 205px)
+  padding-left: 200px;
+  padding-right: 200px;
+}
+
+.header-route .wrap-select {
+  width: 50%;
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .react-autosuggest {
