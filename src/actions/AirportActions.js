@@ -25,11 +25,11 @@ let AirportActions = {
     );
   },
 
-  chooseAirport(target, code) {
+  chooseAirport(origin, destination) {
     AppDispatcher.dispatch({
       type: constants.CHOOSE_AIRPORT,
-      target,
-      code
+      origin,
+      destination
     });
   },
 

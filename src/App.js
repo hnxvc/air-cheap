@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import './App.css';
 import AirportStore from './stores/AirportStore';
+import RouteStore from './stores/RouteStore';
+import TicketStore from './stores/TicketStore';
 import AirportActions from './actions/AirportActions';
 import { Container } from 'flux/utils';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import './App.css';
+import TicketItem from './components/TicketItem';
 
 class App extends Component {
   constructor(props) {
@@ -12,50 +15,45 @@ class App extends Component {
 
     this.state = {
       airports: AirportStore.getState(),
+      tickets: TicketStore.getState(),
       from: '',
       to: ''
     }
-
-    this.onChangeFrom = this.onChangeFrom.bind(this);
-    this.onChangeTo = this.onChangeTo.bind(this);
   }
 
   componentDidMount() {
     AirportActions.fetchAirports();
+    AirportActions.fetchTickets();
   }
 
-  onChangeFrom(item) {
+
+  handleSelect(field, item) {
     if(item) {
       this.setState({
-        from: item.value
+        [field]: item.value
+      }, () => {
+        AirportActions.chooseAirport(this.state.from, this.state.to);
       });
     } else {
       this.setState({
-        from: ''
+        [field]: ''
+      }, () => {
+        AirportActions.chooseAirport(this.state.from, this.state.to);
       });
     }
   }
 
-  onChangeTo(item) {
-    if(item) {
-      this.setState({
-        to: item.value
-      });
-    } else {
-      this.setState({
-        to: ''
-      });
+  componentWillUpdate(nextProps, nextState) {
+    let originAndDestinationSelected = (nextState.origin && nextState.destination);
+    let selectionHasChangedSinceLastUpdate = (nextState.origin !== this.state.origin)
+      || (nextState.destination !== this.state.destination);
+
+    if(originAndDestinationSelected && selectionHasChangedSinceLastUpdate) {
+      AirportActions.fetchTickets(this.state.origin, this.state.destination);
     }
   }
 
   render() {
-    const { value, suggestions } = this.state;
-    const inputProps = {
-      placeholder: 'From',
-      value,
-      onChange: this.onChange
-    }
-
     let options = this.state.airports.map(item => {
       return Object.assign(
         {},
@@ -63,6 +61,10 @@ class App extends Component {
         { label: item.city }
       )
     });
+
+    let ticketList = this.state.tickets.map((ticket)=>(
+      <TicketItem key={ticket.id} ticket={ticket} />
+    ));
 
     return (
       <div className="App">
@@ -78,7 +80,7 @@ class App extends Component {
                 name="origin"
                 value={this.state.from}
                 options={options}
-                onChange={this.onChangeFrom}
+                onChange={this.handleSelect.bind(this, 'from')}
               />
             </div>
             <div className="wrap-select">
@@ -87,20 +89,27 @@ class App extends Component {
                 name="destination"
                 value={this.state.to}
                 options={options}
-                onChange={this.onChangeTo}
+                onChange={this.handleSelect.bind(this, 'to')}
               />
             </div>
           </div>
         </header>
+        <div>
+          {ticketList}
+        </div>
       </div>
     );
   }
 }
 
-App.getStores = () => ([AirportStore]);
+App.getStores = () => ([AirportStore, RouteStore, TicketStore]);
 App.calculateState = (prevState) => {
+  console.log('REMOVEME --- prevState',  prevState);
   return ({
-    airports: AirportStore.getState()
+    airports: AirportStore.getState(),
+    origin: RouteStore.getState().origin,
+    destination: RouteStore.getState().destination,
+    tickets: TicketStore.getState()
   })
 }
 

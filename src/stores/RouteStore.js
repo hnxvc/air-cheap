@@ -1,12 +1,19 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import constants from '../constants';
-import { MapStore } from 'flux/utils';
+import { ReduceStore } from 'flux/utils';
 
-class RouteStore extends MapStore {
+class RouteStore extends ReduceStore {
+  getInitialState() {
+    return [];
+  }
+
   reduce(state, action) {
     switch(action.type) {
       case constants.CHOOSE_AIRPORT:
-        return state.set(action.target, action.code);
+          return {
+            origin: action.origin,
+            destination: action.destination,
+          };
       default:
         return state;
     }
