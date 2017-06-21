@@ -10,5 +10,6 @@
   { "code": "MAD", "city": "Madrid", "country": "ES" },
   { "code": "SFO", "city": "San Francisco CA", "country": "US" },
   { "code": "GRU", "city": "São Paulo", "country": "BR" },
+  { "code": "MIA", "city": "AAAA", "country": "AAAAA" },
   { "code": "DME", "city": "Moscow", "country": "RU" }
 ]

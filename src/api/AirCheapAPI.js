@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import AirportActions from '../actions/AirportActions';
 
 let AirCheapAPI = {
   fetchAirports(successCallback, errorCallback) {

@@ -16,9 +16,12 @@ class App extends Component {
     this.state = {
       airports: AirportStore.getState(),
       tickets: TicketStore.getState(),
+      suggestions: TicketStore.getState(),
       from: '',
       to: ''
-    }
+    };
+
+    this.getSuggestion = this.getSuggestion.bind(this);
   }
 
   componentDidMount() {
@@ -32,15 +35,67 @@ class App extends Component {
       this.setState({
         [field]: item.value
       }, () => {
-        AirportActions.chooseAirport(this.state.from, this.state.to);
+        // AirportActions.chooseAirport(this.state.from, this.state.to);
+        this.getSuggestion(this.state.from, this.state.to);
       });
     } else {
       this.setState({
         [field]: ''
       }, () => {
-        AirportActions.chooseAirport(this.state.from, this.state.to);
+        this.getSuggestion(this.state.from, this.state.to);
+        // AirportActions.chooseAirport(this.state.from, this.state.to);
       });
     }
+  }
+
+  getSuggestion(from, to) {
+    let tickets = this.state.tickets;
+    let suggestions = [];
+
+    if(from && !to) {
+      suggestions = tickets.filter(ticket => {
+        let returned = false;
+        for(var j=0; j<ticket.segment.length; j++) {
+          if(ticket.segment[j].origin === from) {
+            returned = true;
+            break;
+          }
+        }
+        return returned;
+      });
+
+    } else if (!from && to) {
+      suggestions = tickets.filter(ticket => {
+        let returned = false;
+        for(var j=0; j<ticket.segment.length; j++) {
+          if(ticket.segment[j].destination === to) {
+            returned = true;
+            break;
+          }
+        }
+        return returned;
+      });
+
+    } else if (from && to) {
+      suggestions = tickets.filter(ticket => {
+        let returned = false;
+        for(var j=0; j<ticket.segment.length; j++) {
+          if(ticket.segment[j].origin === from && ticket.segment[j].destination === to) {
+            returned = true;
+            break;
+          }
+        }
+        return returned;
+      });
+
+    } else {
+      suggestions = this.state.tickets;
+    }
+
+
+    this.setState({
+      suggestions
+    });
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -62,7 +117,7 @@ class App extends Component {
       )
     });
 
-    let ticketList = this.state.tickets.map((ticket)=>(
+    let ticketList = this.state.suggestions.map((ticket)=>(
       <TicketItem key={ticket.id} ticket={ticket} />
     ));
 
@@ -70,7 +125,7 @@ class App extends Component {
       <div className="App">
         <header>
           <div className="header-brand">
-            <img src="logo.png" height="35"/>
+            <img src="logo.png" height="35" alt="logo"/>
             <p>Check discount ticket prices and pay using your AirCheap points</p>
           </div>
           <div className="header-route">
@@ -104,12 +159,12 @@ class App extends Component {
 
 App.getStores = () => ([AirportStore, RouteStore, TicketStore]);
 App.calculateState = (prevState) => {
-  console.log('REMOVEME --- prevState',  prevState);
   return ({
     airports: AirportStore.getState(),
     origin: RouteStore.getState().origin,
     destination: RouteStore.getState().destination,
-    tickets: TicketStore.getState()
+    tickets: TicketStore.getState(),
+    suggestions: TicketStore.getState()
   })
 }
 
