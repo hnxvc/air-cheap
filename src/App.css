@@ -11,7 +11,6 @@ header {
   padding-top: 10px;
   border-bottom: 1px solid #ccc;
   border-top: 4px solid #08516E;
-  height: 115px;
   background-color: #f6f6f6;
 }
 
@@ -28,6 +27,14 @@ p {
   margin-top: 10px;
   padding-left: 200px;
   padding-right: 200px;
+  padding-bottom: 25px;
+  padding-top: 15px;
+}
+
+.header-route:after {
+  content: '';
+  display: table;
+  clear: both;
 }
 
 .header-route .wrap-select {

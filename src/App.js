@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AirportStore from './stores/AirportStore';
-import RouteStore from './stores/RouteStore';
 import TicketStore from './stores/TicketStore';
 import AirportActions from './actions/AirportActions';
 import { Container } from 'flux/utils';
@@ -125,7 +124,7 @@ class App extends Component {
       <div className="App">
         <header>
           <div className="header-brand">
-            <img src="logo.png" height="35" alt="logo"/>
+            <img src="logo.jpg" alt="logo" height="100"/>
             <p>Check discount ticket prices and pay using your AirCheap points</p>
           </div>
           <div className="header-route">
@@ -157,12 +156,10 @@ class App extends Component {
   }
 }
 
-App.getStores = () => ([AirportStore, RouteStore, TicketStore]);
+App.getStores = () => ([AirportStore,  TicketStore]);
 App.calculateState = (prevState) => {
   return ({
     airports: AirportStore.getState(),
-    origin: RouteStore.getState().origin,
-    destination: RouteStore.getState().destination,
     tickets: TicketStore.getState(),
     suggestions: TicketStore.getState()
   })

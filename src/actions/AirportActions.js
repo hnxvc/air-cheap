@@ -25,14 +25,6 @@ let AirportActions = {
     );
   },
 
-  chooseAirport(origin, destination) {
-    AppDispatcher.dispatch({
-      type: constants.CHOOSE_AIRPORT,
-      origin,
-      destination
-    });
-  },
-
   fetchTickets(origin, destination) {
     AppDispatcher.dispatch({
       type: constants.FETCH_TICKETS,
